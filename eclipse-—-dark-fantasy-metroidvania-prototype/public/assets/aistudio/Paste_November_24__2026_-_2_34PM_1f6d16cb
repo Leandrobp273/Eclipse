@@ -1,0 +1,925 @@
+ECLIPSE — GAME DEVELOPMENT MASTER PROMPT
+First Playable Prototype — Movement & Combat Laboratory
+Act as a senior game developer, gameplay programmer, technical game designer and 2D animation specialist.
+Your task is to DESIGN AND IMPLEMENT a playable 2D dark fantasy Metroidvania prototype called ECLIPSE.
+Do not simply explain how the game could be made. Actually build the playable prototype, implement its systems, create the scenes, connect the mechanics and make sure the project runs.
+Use GODOT 4 and GDScript.
+The project must be modular, organized, expandable and easy to modify.
+
+1. GAME CONCEPT
+ECLIPSE is an original 2D dark fantasy action Metroidvania inspired by the design philosophies of:
+Hollow Knight: exploration, precise platforming, atmosphere and boss design.
+Dead Cells: responsive movement, fast combat, fluid dodging and satisfying game feel.
+Skul: The Hero Slayer: different character forms, abilities and combat identities.
+Do not copy characters, artwork, maps, assets or proprietary content from these games.
+Create an original identity.
+Universe
+The world is divided between two primordial forces:
+CELESTIAL:
+Light.
+Order.
+Divine energy.
+Purification.
+Restoration.
+ABYSSAL:
+Darkness.
+Chaos.
+Blood.
+Destruction.
+Transformation.
+The protagonist is a supernatural warrior capable of fighting against the opposing force.
+For this initial prototype, implement ONE playable character with a visual identity that combines elements of celestial and demonic fantasy.
+The character should have:
+A small recognizable silhouette.
+A mysterious mask.
+Horns or a broken halo.
+Dark armor.
+Glowing magical details.
+A primary melee weapon.
+Use original placeholder graphics if final artwork is unavailable.
+
+2. MAIN OBJECTIVE
+Create a small playable environment containing EXACTLY TWO MAIN ROOMS.
+ROOM 1 — SAFE MOVEMENT LABORATORY: An empty room without enemies.
+ROOM 2 — COMBAT ARENA: A room containing enemies that the player can fight.
+The rooms must be connected and accessible through a door or transition area.
+The player must be able to move between the rooms.
+The two rooms must be visually distinguishable but belong to the same world.
+ROOM 1 — SAFE MOVEMENT LABORATORY
+Purpose: test and refine the player's movement mechanics.
+Environment:
+Dark fantasy architectural style.
+Ancient stone platforms.
+Minimal environmental decoration.
+A few different platform heights.
+Wide open floor.
+Vertical platforms for jumping tests.
+A wall for collision tests.
+A narrow passage for dash testing.
+A safe area to experiment with movement.
+There must be NO ENEMIES in this room.
+Include:
+Flat ground for acceleration testing.
+Small platforms.
+High platforms.
+Vertical walls.
+A long horizontal corridor.
+A small gap to test jumping.
+A doorway connecting to Room 2.
+ROOM 2 — COMBAT ARENA
+Purpose: test combat, movement and interaction with enemies.
+Environment:
+Dark underground arena.
+Gothic architecture.
+Crimson and violet lighting.
+Ancient stone platforms.
+Atmospheric background.
+Clear visual separation between gameplay platforms and decoration.
+Include at least THREE enemy types:
+ENEMY 1 — ABYSSAL GRUNT:
+Basic melee enemy.
+Approaches the player.
+Attacks at close range.
+Has a readable attack animation.
+Has health and receives damage.
+ENEMY 2 — ABYSSAL HUNTER:
+More agile enemy.
+Moves toward the player.
+Performs short charges.
+Has different attack timing.
+ENEMY 3 — ABYSSAL RANGED CREATURE:
+Keeps distance from the player.
+Fires projectiles.
+Has a visible attack telegraph.
+Can be defeated by melee attacks.
+All enemies must have:
+Health.
+Damage values.
+Attack cooldowns.
+Hit reactions.
+Death animations or visual feedback.
+Basic AI states.
+The enemies must not attack the player inside Room 1.
+
+3. PLAYER MOVEMENT SYSTEM
+Movement is the highest priority of this prototype.
+The character must feel responsive, fluid, precise and satisfying.
+Implement:
+Horizontal movement
+Left and right movement.
+Acceleration.
+Deceleration.
+Maximum horizontal speed.
+Direction changes.
+Ground movement.
+Air movement.
+Configurable movement parameters.
+Initial experimental values:
+max_speed = 260 acceleration = 1800 deceleration = 2200 air_acceleration = 1100
+Use pixels per second and seconds.
+Jump
+Implement:
+Normal jump.
+Variable jump height.
+Coyote time.
+Jump buffering.
+Gravity.
+Maximum falling speed.
+Air control.
+Initial experimental values:
+jump_velocity = -500 gravity = 1500 fall_gravity_multiplier = 1.25 jump_cut_multiplier = 0.45 max_fall_speed = 850
+coyote_time = 0.10 jump_buffer_time = 0.12
+These values are initial tuning parameters, not mandatory final values.
+Dash
+Implement an eight-direction dash system.
+Requirements:
+Dash horizontally.
+Dash vertically.
+Dash diagonally.
+Dash in the air.
+Configurable dash duration.
+Configurable dash speed.
+Cooldown.
+Proper collision handling.
+Visual trail.
+Optional temporary invulnerability.
+Initial experimental values:
+dash_speed = 650 dash_duration = 0.16 dash_cooldown = 0.35
+Dash direction should be determined by player input. If no direction is pressed, use the character's facing direction.
+The dash must not cause the character to get stuck in walls or platforms.
+Separate dash movement duration from invulnerability duration.
+
+4. COMBAT SYSTEM
+Implement a functional melee combat system.
+The player must be able to:
+Attack using a primary weapon.
+Perform a basic attack combo.
+Deal damage to enemies.
+Receive damage.
+Knock enemies back.
+Receive visual and sound feedback.
+Create at least a three-stage attack combo.
+Every attack must have:
+Damage.
+Attack duration.
+Hitbox activation window.
+Recovery time.
+Animation or visual feedback.
+The player must be able to reposition between attacks.
+Avoid allowing attacks to activate continuously without cooldown or proper animation timing.
+Hitbox and Hurtbox
+Separate attack hitboxes from character collision.
+Use appropriate Area2D nodes or another clean collision architecture.
+Make sure:
+The player cannot damage itself.
+Enemies receive damage only once per attack activation.
+Hitboxes are enabled only during active attack frames.
+Damage feedback is visible.
+
+5. PARRY SYSTEM
+Implement a timed parry mechanic.
+Controls:
+Dedicated parry button.
+Requirements:
+A short parry activation window.
+Successful parry detection.
+Failed parry feedback.
+Enemy attack interruption.
+Counterattack opportunity.
+Visual effects on successful parry.
+A successful parry should:
+Prevent the incoming attack damage.
+Stagger the attacking enemy.
+Generate a distinct visual effect.
+Restore a small amount of essence.
+The parry must reward precise timing.
+Make parry timing configurable through exported variables.
+Do not make the player permanently invulnerable while holding the parry button.
+
+6. HEALTH, ESSENCE AND HEALING
+Implement two resource systems.
+HEALTH:
+Player health.
+Enemy health.
+Damage feedback.
+Death and respawn.
+ESSENCE:
+Resource gained through successful attacks and perfect parries.
+Used for healing.
+Displayed in the HUD.
+HEALING:
+Dedicated healing button.
+Consumes essence.
+Has a short animation or channeling duration.
+Interruptible when taking damage.
+Restores a configurable amount of health.
+Healing must require a strategic decision rather than functioning as instant unlimited regeneration.
+Initial example:
+Maximum health: 100.
+Maximum essence: 100.
+Healing cost: 40 essence.
+Healing amount: 30 health.
+
+7. PLAYER STATE MACHINE
+Build a clean state machine.
+Required states:
+IDLE
+RUNNING
+JUMPING
+FALLING
+DASHING
+ATTACKING
+PARRYING
+HEALING
+HURT
+DEAD
+Avoid conflicting movement commands.
+Only one system should be responsible for applying the player's physical movement during each physics frame.
+Separate:
+Input reading.
+State transitions.
+Movement physics.
+Combat logic.
+Animation.
+Health and essence.
+
+8. VISUAL STYLE
+Use an original dark fantasy visual direction.
+Visual references:
+Gothic architecture.
+Dark purple and crimson environments.
+Cyan magical particles.
+Celestial and demonic symbols.
+Ancient ruins.
+Atmospheric lighting.
+Layered parallax backgrounds.
+The protagonist should have a recognizable silhouette.
+If custom sprites are unavailable, use temporary original pixel art, geometric placeholder sprites or procedural visual effects.
+Do not use plain default Godot icons as the final player or enemy representation.
+Prioritize readability and gameplay functionality over decorative details.
+
+9. HUD AND DEBUG INTERFACE
+Create a functional HUD showing:
+Player health bar.
+Essence bar.
+Current health values.
+Current essence values.
+Dash availability.
+Current player state.
+Enemy health bars when appropriate.
+Create a developer debug panel that can be toggled.
+The debug panel should display:
+Current horizontal velocity.
+Current vertical velocity.
+Current movement state.
+Current player position.
+Is grounded.
+Is dashing.
+Dash cooldown.
+Current health.
+Current essence.
+Current FPS.
+The debug panel is important because we will use it to perform engineering reverse tests and adjust movement parameters.
+
+10. MOVEMENT TESTING ENVIRONMENT
+The first room must function as a laboratory.
+Implement clear testing areas:
+TEST A: Flat ground to measure acceleration and maximum speed.
+TEST B: Horizontal corridor to measure deceleration.
+TEST C: Platforms with different heights to test jumping.
+TEST D: Small platforms to test landing precision.
+TEST E: Vertical wall to test collision handling.
+TEST F: Narrow corridor to test dash.
+TEST G: Large gap to test air control.
+TEST H: High platform to test falling behavior.
+The debug panel should allow us to understand the character's behavior during each test.
+
+11. ARCHITECTURE AND CODE ORGANIZATION
+Use modular and maintainable code.
+Suggested structure:
+ECLIPSE/ project.godot
+scenes/ main/ main.tscn
+rooms/
+  movement_lab.tscn
+  combat_arena.tscn
+
+player/
+  player.tscn
+
+enemies/
+  abyssal_grunt.tscn
+  abyssal_hunter.tscn
+  ranged_creature.tscn
+scripts/ player/ player_controller.gd player_state_machine.gd player_combat.gd player_health.gd player_essence.gd
+enemies/
+  enemy_base.gd
+  enemy_ai.gd
+
+systems/
+  room_manager.gd
+  combat_manager.gd
+  game_manager.gd
+
+ui/
+  hud.gd
+  debug_panel.gd
+assets/ characters/ enemies/ environments/ effects/ audio/
+Avoid putting the entire game inside one large script.
+Use signals for communication between independent systems where appropriate.
+Use exported variables for configurable parameters.
+
+12. CONTROLS
+Create a keyboard control scheme:
+A / D: Move left and right.
+SPACE: Jump.
+SHIFT: Dash.
+J: Primary attack.
+K: Parry.
+L: Heal.
+W / S: Optional directional dash input.
+ESC: Pause.
+F3: Toggle debug panel.
+Display the controls somewhere in the prototype.
+
+13. DEVELOPMENT PROCESS
+Build the game in the following order:
+PHASE 1: Create the Godot project and two room scenes.
+PHASE 2: Implement the player and movement physics.
+PHASE 3: Implement dash and movement state transitions.
+PHASE 4: Implement the combat system.
+PHASE 5: Implement parry and healing.
+PHASE 6: Create the three enemy types.
+PHASE 7: Implement room transitions.
+PHASE 8: Create the HUD and debug panel.
+PHASE 9: Test all mechanics and fix bugs.
+PHASE 10: Polish the visual presentation.
+Do not skip earlier phases to work on decorative content.
+
+14. QUALITY REQUIREMENTS
+The final result must:
+Open and run in Godot 4.
+Have exactly two main playable rooms.
+Have no enemies in Room 1.
+Have at least three enemy types in Room 2.
+Allow movement between the rooms.
+Have functional jumping and dash.
+Have functional attacks.
+Have functional parry.
+Have functional healing.
+Have health and essence systems.
+Have a functional HUD.
+Have a working debug panel.
+Have no missing scripts or broken scene references.
+Avoid major physics and collision bugs.
+Use clean and understandable GDScript.
+Do not provide pseudocode when functional implementation is requested.
+Do not claim a feature works unless it has actually been implemented and tested.
+
+15. FINAL DELIVERABLE
+Deliver:
+Complete Godot project.
+Both playable rooms.
+Player controller.
+Three functional enemies.
+Combat system.
+Parry system.
+Healing and essence system.
+HUD.
+Debug panel.
+Instructions for opening and running the project.
+A list of implemented features.
+A list of known bugs or incomplete features.
+If you have access to file creation tools, create the actual project files and organize them into the project directory.
+If you cannot create files directly, provide each file with its complete path and complete source code.
+Do not stop after creating a design document.
+THE GOAL IS A FUNCTIONAL, PLAYABLE FIRST PROTOTYPE OF ECLIPSE.
+Prioritize gameplay feel, movement precision, clean architecture and working mechanics.
+Begin by creating the project structure and implementing the first playable version.
+
+ECLIPSE — EXPANSION 01
+Third Room: BOSS ARENA
+Act as a senior gameplay programmer and technical game designer.
+We already have an existing Godot 4 project called ECLIPSE.
+The project currently contains:
+ROOM 1 — Movement Laboratory (no enemies).
+ROOM 2 — Combat Arena (three enemy types).
+Player movement, jumping, dash, combat, parry, healing and essence systems.
+HUD and debug interface.
+Your task is to EXPAND THE EXISTING PROJECT by adding a THIRD PLAYABLE ROOM dedicated to a BOSS FIGHT.
+IMPORTANT:
+Do not recreate the project from scratch.
+Do not delete or overwrite existing functionality.
+Preserve all existing scripts, scenes, systems and configurations.
+Reuse the existing player controller, combat, health, essence, parry and healing systems.
+Inspect the existing project architecture before making changes.
+Integrate the new room into the existing room transition system.
+1. THIRD ROOM — BOSS ARENA
+Create a new scene:
+scenes/rooms/boss_arena.tscn
+The room must be a dedicated boss encounter arena.
+Visual direction:
+Dark fantasy atmosphere.
+Large ancient gothic architecture.
+Crimson, violet and black color palette.
+Broken statues.
+Ancient demonic symbols.
+Atmospheric particles.
+Dramatic background lighting.
+A large central combat area.
+The arena must be significantly larger and visually more imposing than the normal combat room.
+Include:
+A clear entrance.
+A central boss combat area.
+A clear floor for combat.
+Walls that prevent the player from escaping during the encounter.
+A boss entrance location.
+A boss health bar.
+Environmental effects during boss phases.
+2. FIRST BOSS — THE FALLEN JUDGMENT
+Create an original boss called:
+THE FALLEN JUDGMENT
+Concept: An ancient celestial guardian corrupted by abyssal energy.
+Appearance:
+Large humanoid silhouette.
+Broken celestial halo.
+Dark armor.
+One damaged wing.
+Glowing crimson and violet energy.
+Large weapon or magical blade.
+Distinctive attack animations.
+The boss must feel significantly stronger and more dangerous than normal enemies.
+Create original placeholder artwork or procedural visuals if final sprites are unavailable.
+Do not use copyrighted characters or assets from other games.
+3. BOSS AI AND STATE MACHINE
+Implement a boss-specific state machine.
+Required states:
+INTRO
+IDLE
+APPROACH
+TELEGRAPH
+ATTACK
+RECOVERY
+STAGGERED
+PHASE_TRANSITION
+DEATH
+The boss must have readable behavior.
+Every attack must have:
+Preparation animation or telegraph.
+Attack execution.
+Active damage window.
+Recovery period.
+Visual feedback.
+Avoid attacks that occur without warning.
+4. BOSS ATTACKS
+Implement at least FOUR different attacks.
+ATTACK 1 — ABYSSAL SLASH
+The boss performs a powerful horizontal melee attack.
+Requirements:
+Short preparation.
+Visible attack direction.
+Large melee hitbox.
+Recovery window after the attack.
+ATTACK 2 — CELESTIAL DESCENT
+The boss jumps or teleports upward and crashes down toward the arena floor.
+Requirements:
+Visible warning area.
+Clear landing location.
+Impact effect.
+Damage area.
+Recovery window.
+ATTACK 3 — ABYSSAL PROJECTILES
+The boss launches several magical projectiles toward the player.
+Requirements:
+Projectile spawning.
+Directional targeting.
+Collision detection.
+Damage handling.
+Distinctive visual effects.
+ATTACK 4 — JUDGMENT CHARGE
+The boss charges horizontally across the arena.
+Requirements:
+Telegraph animation.
+Charge direction.
+High movement speed.
+Collision damage.
+Recovery after reaching the destination.
+Make every attack configurable.
+5. BOSS PHASE SYSTEM
+The boss must have THREE COMBAT PHASES.
+PHASE 1 — CELESTIAL GUARDIAN
+Health: 100% to 65%.
+Behavior:
+More deliberate attacks.
+Basic melee strikes.
+Occasional projectiles.
+Longer recovery windows.
+Purpose: Teach the player the boss's attack patterns.
+PHASE 2 — CORRUPTED GUARDIAN
+Health: below 65% to 30%.
+Behavior:
+Increased attack frequency.
+Faster movement.
+New combinations of attacks.
+Shorter recovery windows.
+Stronger projectile patterns.
+Transition:
+Pause combat briefly.
+Play a transformation animation.
+Change the boss's visual appearance.
+Introduce a distinct sound and visual effect.
+PHASE 3 — ABYSSAL JUDGMENT
+Health: below 30%.
+Behavior:
+Aggressive attack combinations.
+Faster attacks.
+More dangerous charge attacks.
+Larger projectile patterns.
+Reduced recovery periods.
+The boss must still have readable telegraphs.
+Difficulty should come from timing, positioning and decision-making, not random unavoidable damage.
+6. PARRY INTERACTION
+The boss must be compatible with the existing player parry system.
+Implement:
+Parrable attacks.
+Non-parrable attacks.
+Visual distinction between both attack types.
+Successful parry feedback.
+Boss stagger after successful parry.
+A short counterattack opportunity.
+Some attacks should require dodging rather than parrying.
+A successful parry must reward precise timing.
+Never allow holding the parry button to automatically block every boss attack.
+7. DASH AND MOVEMENT INTERACTION
+The boss fight must test all existing player movement mechanics.
+Ensure:
+Dash works during boss combat.
+The player can jump over certain attacks.
+The player can reposition during recovery windows.
+Dash collisions are handled correctly.
+The boss cannot trap the player permanently against the arena walls.
+The fight must reward mastery of movement.
+8. BOSS HEALTH AND HUD
+Add a dedicated boss health bar.
+Requirements:
+Large horizontal health bar.
+Boss name.
+Current phase indicator.
+Smooth health reduction animation.
+Different visual effects when entering new phases.
+Boss death presentation.
+The player's existing HUD must remain functional.
+Do not replace or break the current health and essence interface.
+9. BOSS DEATH AND REWARDS
+When the boss reaches zero health:
+Stop boss attacks.
+Play a death animation.
+Disable its attack hitboxes.
+Display a victory message.
+Play a dramatic visual effect.
+Unlock a reward.
+Reward:
+Restore a configurable amount of player essence.
+Display a victory notification.
+Allow the player to leave the boss arena.
+Do not automatically reset the player's progression.
+10. ROOM TRANSITIONS
+The project must now contain THREE main rooms:
+ROOM 1: Movement Laboratory.
+ROOM 2: Combat Arena.
+ROOM 3: Boss Arena.
+Connect the new room to the existing game.
+The player should be able to reach the boss arena through a door or entrance connected to the existing environment.
+Implement:
+Room transition.
+Player positioning after transition.
+Boss initialization.
+Boss encounter activation.
+Return path.
+The boss must not attack before the encounter begins.
+11. BOSS DIFFICULTY AND DEBUG TOOLS
+Extend the existing debug panel.
+Display:
+Boss current health.
+Boss current phase.
+Current AI state.
+Current attack.
+Attack cooldown.
+Current target position.
+Player distance.
+Boss stagger status.
+For development purposes, provide optional debug controls:
+Reset boss encounter.
+Set boss health to 100%.
+Force phase transition.
+Show attack hitboxes.
+Show boss detection range.
+Pause boss AI.
+Debug tools must be disabled during normal gameplay.
+12. TECHNICAL ARCHITECTURE
+Suggested new files:
+scenes/ bosses/ fallen_judgment.tscn
+rooms/ boss_arena.tscn
+scripts/ bosses/ fallen_judgment.gd boss_state_machine.gd boss_attacks.gd boss_phase_manager.gd
+systems/ boss_encounter_manager.gd
+Reuse existing systems whenever possible.
+Avoid duplicating player combat, health, damage and room transition logic.
+Use signals and modular components.
+13. TESTING REQUIREMENTS
+Before considering the implementation complete, test:
+TEST 01: Entering the boss arena.
+TEST 02: Boss introduction sequence.
+TEST 03: All four boss attacks.
+TEST 04: Attack telegraphs and hitboxes.
+TEST 05: Successful and unsuccessful parries.
+TEST 06: Dash and jumping against boss attacks.
+TEST 07: All three health phases.
+TEST 08: Boss stagger and recovery.
+TEST 09: Boss death and rewards.
+TEST 10: Leaving and re-entering the boss arena.
+TEST 11: Compatibility with the existing player HUD.
+TEST 12: Verify that Rooms 1 and 2 still work exactly as before.
+Fix any bugs discovered during testing.
+14. FINAL DELIVERABLE
+Deliver:
+Updated Godot project.
+Third room: boss_arena.tscn.
+Original boss character.
+Boss AI and state machine.
+Four functional attacks.
+Three combat phases.
+Parry interactions.
+Boss health bar.
+Victory and reward system.
+Debug integration.
+Room transitions.
+Test results.
+List of modified and newly created files.
+Do not recreate the existing project.
+Do not provide pseudocode instead of implementation.
+Do not claim that features have been tested unless they have actually been executed.
+The goal is to expand ECLIPSE into a three-room playable prototype with a complete and challenging first boss encounter.
+ECLIPSE — MAJOR CHARACTER UPDATE
+Two Playable Protagonists & Character Selection System
+Act as a senior game developer, gameplay programmer, character designer and technical game designer.
+We already have an existing Godot 4 project called ECLIPSE.
+The project contains three rooms:
+Movement Laboratory — empty room for movement testing.
+Combat Arena — room with three enemy types.
+Boss Arena — room with the first boss, The Fallen Judgment.
+Your task is to UPDATE THE EXISTING PROJECT by introducing TWO PLAYABLE CHARACTERS and a CHARACTER SELECTION SYSTEM.
+IMPORTANT:
+Do not recreate the project.
+Preserve all three existing rooms.
+Preserve all existing mechanics.
+Do not remove existing functionality.
+Integrate both protagonists into the existing movement, combat, parry, dash, health and healing systems.
+Both characters must be playable throughout all three rooms.
+1. CHARACTER SELECTION SCREEN
+Before starting the game, display a dedicated character selection screen.
+The player must choose one of two protagonists:
+THE ABYSSAL — male-coded demonic entity.
+THE CELESTIAL — female celestial entity.
+The selection screen must display:
+Large character artwork or animated character preview.
+Character name.
+Character description.
+Short description of their gameplay identity.
+Movement characteristics.
+Combat characteristics.
+A selection indicator.
+A confirmation button.
+After confirming, the selected character is loaded into Room 1.
+The player must not control both characters simultaneously.
+Store the selected character in a centralized character selection or game manager.
+2. CHARACTER 01 — THE ABYSSAL
+Visual identity
+The Abyssal must have a tall, extremely thin and almost skeletal humanoid body.
+He must look unnaturally tall, intimidating and supernatural.
+HEAD:
+A complete goat head instead of a human head.
+Clearly recognizable goat skull and facial structure.
+Long horns.
+Dark, unsettling appearance.
+No ordinary human face.
+BODY:
+Extremely thin skeletal proportions.
+Long arms.
+Long human-like legs.
+Visible bone-like anatomy or dark skeletal armor.
+A threatening silhouette.
+CHAINS:
+Chains wrapped around both hands and wrists.
+Heavy iron chains.
+Chains should visibly move during animations.
+The chains are part of his visual identity and combat design.
+LEG SHACKLES:
+Both human legs must have heavy iron prisoner shackles.
+Each leg must have a large metallic ball attached through a heavy chain.
+The metal balls must be visibly recognizable as prisoner-style iron restraints.
+They should move and swing naturally during walking, running, jumping and attacking animations.
+HALO:
+A broken halo above or behind the goat head.
+The halo should look ancient and damaged.
+Use dark metallic or corrupted magical materials.
+It must remain visually recognizable during gameplay.
+The overall design should communicate:
+Imprisonment.
+Damnation.
+Ancient evil.
+Supernatural strength.
+A being that was once restrained or condemned.
+Do not make him muscular or bulky.
+His body must remain tall, narrow and skeletal.
+Gameplay identity
+The Abyssal should feel aggressive and heavy despite his thin body.
+Proposed characteristics:
+Strong horizontal attacks.
+Chains used as part of melee attacks.
+Slightly more aggressive movement.
+Heavy attack impact.
+A dash that visually incorporates the chains and shackles.
+Unique attack animations.
+His animations must account for the weight and inertia of the metal balls attached to his legs.
+3. CHARACTER 02 — THE CELESTIAL
+Visual identity
+The Celestial is a supernatural woman with an elegant and ethereal appearance.
+HEAD AND HAIR:
+Female face.
+Long flowing hair.
+Hair must move naturally during movement.
+Elegant and recognizable silhouette.
+CLOTHING:
+Long white dress.
+Flowing fabric.
+Elegant silhouette.
+Fabric movement during walking, jumping and dashing.
+Subtle golden or silver details.
+HALO:
+A luminous halo above her head.
+Clearly visible during gameplay.
+Soft golden or white glow.
+Magical particles may surround it.
+Overall appearance:
+Divine.
+Elegant.
+Mysterious.
+Powerful.
+Supernatural.
+Avoid making her look like an ordinary human wearing a costume.
+She must feel like a genuine celestial being.
+Gameplay identity
+The Celestial should feel fluid, precise and graceful.
+Proposed characteristics:
+Fluid movement.
+More controlled aerial movement.
+Elegant attack animations.
+Magical energy effects.
+A visually distinct dash.
+A healing animation with celestial light.
+4. DIFFERENT GAMEPLAY IDENTITIES
+Both protagonists must share the same core gameplay systems.
+However, their characteristics should create different experiences.
+THE ABYSSAL:
+Aggressive combat.
+Chain-based attacks.
+Strong impact feedback.
+More forceful movement animations.
+Heavy-looking dash.
+Dark magical effects.
+THE CELESTIAL:
+Precise combat.
+Graceful movement.
+Fluid aerial control.
+Light-based attack effects.
+Elegant dash.
+Divine healing effects.
+Important: Do not create completely separate movement systems.
+Use a shared player controller with character-specific configuration resources.
+For example:
+CharacterStats:
+max_speed
+acceleration
+deceleration
+air_control
+jump_velocity
+dash_speed
+dash_duration
+attack_damage
+attack_recovery
+healing_animation_speed
+Allow different values for each character where appropriate.
+Balance the characters so neither is strictly superior.
+5. CHARACTER-SPECIFIC ANIMATIONS
+Implement or create placeholders for the following animations for BOTH characters:
+IDLE
+RUN
+JUMP
+FALL
+DASH
+ATTACK_1
+ATTACK_2
+ATTACK_3
+PARRY
+HEAL
+HURT
+DEATH
+Character-specific visual requirements:
+ABYSSAL:
+Chains swing during movement.
+Iron balls move with physical inertia.
+Goat head remains visually recognizable.
+Broken halo follows the character.
+Attacks use chain-based visual effects.
+CELESTIAL:
+Long hair moves during movement.
+White dress responds to motion.
+Halo follows the character.
+Dash uses luminous particles.
+Attacks use celestial energy effects.
+Prioritize animation readability and collision accuracy.
+6. CHARACTER-SPECIFIC COMBAT
+The two protagonists must have different visual attack identities.
+ABYSSAL:
+Uses chains for melee attacks.
+Chains may extend during attack animations.
+Strong visual impact.
+Dark energy effects.
+CELESTIAL:
+Uses celestial energy or a magical attack manifestation.
+Elegant attack animations.
+Luminous effects.
+Clear attack range and hitbox feedback.
+Both characters must support:
+Three-stage attack combos.
+Parry.
+Dash.
+Healing.
+Essence consumption.
+Damage and knockback.
+Keep the combat architecture shared and modular.
+7. CHARACTER SELECTION AND ROOM INTEGRATION
+The character selection system must work with all three existing rooms.
+ROOM 1 — MOVEMENT LABORATORY: The selected character is spawned with the correct appearance and configuration.
+ROOM 2 — COMBAT ARENA: The same selected character retains their health, essence and abilities.
+ROOM 3 — BOSS ARENA: The selected character fights The Fallen Judgment.
+Character selection must persist across room transitions.
+Do not reset the selected character when changing rooms.
+8. CHARACTER-SPECIFIC VISUAL EFFECTS
+Implement different effects for each character.
+ABYSSAL:
+Dark smoke.
+Crimson particles.
+Chain movement effects.
+Metallic impact effects.
+Corrupted energy.
+CELESTIAL:
+Golden particles.
+White light.
+Soft magical trails.
+Luminous impact effects.
+Divine energy.
+Effects must not obscure important gameplay information.
+9. PROJECT ARCHITECTURE
+Use a shared player controller and separate character configuration.
+Suggested structure:
+scenes/ character_select/ character_select.tscn
+player/ player.tscn abyssal_visuals.tscn celestial_visuals.tscn
+scripts/ player/ player_controller.gd player_combat.gd player_character_config.gd
+characters/ abyssal_config.gd celestial_config.gd
+systems/ character_selection_manager.gd game_manager.gd
+assets/ characters/ abyssal/ celestial/
+Keep the architecture compatible with the existing project.
+10. TESTING REQUIREMENTS
+Test both characters independently.
+TEST 01: Character selection screen.
+TEST 02: Selecting The Abyssal.
+TEST 03: Selecting The Celestial.
+TEST 04: Correct appearance after spawning.
+TEST 05: Movement and jumping with both characters.
+TEST 06: Dash with both characters.
+TEST 07: Attack combos with both characters.
+TEST 08: Parry with both characters.
+TEST 09: Healing with both characters.
+TEST 10: Character persistence between all three rooms.
+TEST 11: Combat against all existing enemies.
+TEST 12: Boss encounter with both characters.
+TEST 13: Verify that animations do not interfere with hitboxes or collisions.
+11. FINAL REQUIREMENTS
+The updated project must contain:
+Character selection screen.
+Two distinct playable protagonists.
+Shared and reusable movement systems.
+Character-specific configurations.
+Character-specific attack animations.
+Character-specific visual effects.
+Compatibility with all three rooms.
+Compatibility with all existing enemies.
+Compatibility with the boss.
+Persistent character selection.
+Do not recreate the project.
+Do not delete existing mechanics.
+Do not use placeholder human heads for The Abyssal or generic wings as a substitute for The Celestial's actual design.
+The Abyssal must have a recognizable goat head, skeletal body, chains on both hands, iron prisoner balls attached to both legs and a broken halo.
+The Celestial must be a woman with long hair, a white dress and a luminous halo.
+The final result must be a functional expansion of the existing ECLIPSE project.
+

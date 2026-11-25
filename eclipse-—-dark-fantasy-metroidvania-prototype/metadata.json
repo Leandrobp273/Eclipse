@@ -1,0 +1,6 @@
+{
+  "name": "ECLIPSE — Dark Fantasy Metroidvania Prototype",
+  "description": "Protótipo jogável de Metroidvania 2D dark fantasy com dois protagonistas, três salas interconectadas, sistema de parry, combate e luta contra chefe.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
